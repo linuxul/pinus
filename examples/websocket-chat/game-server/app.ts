@@ -20,7 +20,8 @@ app.set('name', 'chatofpomelo-websocket');
 app.configure('production|development', 'connector', function () {
     app.set('connectorConfig',
         {
-            connector: pinus.connectors.hybridconnector,
+            connector: pinus.connectors.sioconnector,
+            transports: ['polling'],
             heartbeat: 3,
             useDict: true,
             useProtobuf: true
@@ -34,7 +35,8 @@ app.configure('production|development', 'connector', function () {
 app.configure('production|development', 'gate', function () {
     app.set('connectorConfig',
         {
-            connector: pinus.connectors.hybridconnector,
+            connector: pinus.connectors.sioconnector,
+            transports: ['polling'],
             useProtobuf: true
         });
 });

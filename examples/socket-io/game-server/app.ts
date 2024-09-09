@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-const io = new Server(3001);
+const io = new Server(3002);
 
 io.on("connection", (socket) => {
     socket.emit("hello", "world");

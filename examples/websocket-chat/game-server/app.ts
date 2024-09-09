@@ -21,10 +21,10 @@ app.configure('production|development', 'connector', function () {
     app.set('connectorConfig',
         {
             connector: pinus.connectors.sioconnector,
-            transports: ['polling'],
             heartbeat: 3,
-            useDict: true,
-            useProtobuf: true
+            closeTimeout: 600 * 1000,
+            heartbeatTimeout: 600 * 1000,
+            heartbeatInterval: 250 * 1000
         });
 
     app.set('serverConfig', {
@@ -36,8 +36,9 @@ app.configure('production|development', 'gate', function () {
     app.set('connectorConfig',
         {
             connector: pinus.connectors.sioconnector,
-            transports: ['polling'],
-            useProtobuf: true
+            closeTimeout: 600 * 1000,
+            heartbeatTimeout: 600 * 1000,
+            heartbeatInterval: 250 * 1000
         });
 });
 

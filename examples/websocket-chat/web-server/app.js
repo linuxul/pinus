@@ -19,6 +19,6 @@ if (env == "production") {
 }
 
 console.log(
-  "Web server has started.\nPlease log on http://192.168.35.247:3001/index.html"
+  "Web server has started.\nPlease log on http://127.0.0.1:3001/index.html"
 );
 app.listen(3001);

@@ -9,7 +9,7 @@ export class Robot {
   pinusClient = new PinusWSClient();
 
   public connectGate(): void {
-    let host = "192.168.35.247";
+    let host = "127.0.0.1";
     let port = "3014";
     this.pinusClient.on(PinusWSClientEvent.EVENT_IO_ERROR, (event) => {
       // 错误处理

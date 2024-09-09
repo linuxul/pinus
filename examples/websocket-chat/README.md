@@ -31,7 +31,7 @@ launch.js
       "type": "node",
       "request": "attach",
       "name": "附到connector",
-      "address": "192.168.35.247",
+      "address": "127.0.0.1",
       "port": 10001,
       "localRoot": "${workspaceFolder}/game-server/dist",
       "remoteRoot": "${workspaceFolder}/game-server/dist"
@@ -40,7 +40,7 @@ launch.js
       "type": "node",
       "request": "attach",
       "name": "附到gate",
-      "address": "192.168.35.247",
+      "address": "127.0.0.1",
       "port": 10003,
       "localRoot": "${workspaceFolder}/game-server/dist",
       "remoteRoot": "${workspaceFolder}/game-server/dist"
@@ -49,7 +49,7 @@ launch.js
       "type": "node",
       "request": "attach",
       "name": "附到chat",
-      "address": "192.168.35.247",
+      "address": "127.0.0.1",
       "port": 10002,
       "localRoot": "${workspaceFolder}/game-server/dist",
       "remoteRoot": "${workspaceFolder}/game-server/dist"

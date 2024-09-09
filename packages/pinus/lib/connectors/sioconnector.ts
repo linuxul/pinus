@@ -82,7 +82,7 @@ export class SIOConnector extends EventEmitter implements IConnector {
             let httpServer = createHttpServer();
             sio = new Server(httpServer, opts);
             httpServer.listen(port, function () {
-                logger.info('sio http Server listening at port %d', port);
+                logger.info('sio http Server listening at port23 %d', port);
             });
         }
 

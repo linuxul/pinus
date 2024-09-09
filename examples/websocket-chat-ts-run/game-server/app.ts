@@ -52,7 +52,7 @@ app.configure('all', 'connector|gate|chat', () => {
 app.configure('production|development', 'connector', function () {
     app.set('connectorConfig',
         {
-            connector: pinus.connectors.hybridconnector,
+            connector: pinus.connectors.sioconnector,
             heartbeat: 60,
             useDict: true,
             useProtobuf: true
@@ -82,7 +82,7 @@ app.configure('production|development', 'connector', function () {
 app.configure('production|development', 'gate', function () {
     app.set('connectorConfig',
         {
-            connector: pinus.connectors.hybridconnector,
+            connector: pinus.connectors.sioconnector,
             useProtobuf: true
         });
 });
@@ -151,7 +151,7 @@ app.configure('production|development', function () {
 
 app.configure('development', function () {
     // enable the system monitor modules
-    // app.enable('systemMonitor');
+    app.enable('systemMonitor');
 });
 
 if (app.isMaster()) {

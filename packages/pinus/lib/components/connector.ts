@@ -69,6 +69,8 @@ export class ConnectorComponent implements IComponent {
     session: SessionComponent;
 
     constructor(app: Application, opts?: ConnectorComponentOptions) {
+        logger.info('ConnectorComponent constructor');
+
         opts = opts || {};
         this.app = app;
         this.connector = getConnector(app, opts);
@@ -96,6 +98,8 @@ export class ConnectorComponent implements IComponent {
     name = '__connector__';
 
     start(cb: () => void) {
+        logger.info('ConnectorComponent start');
+
         this.server = this.app.components.__server__;
         this.session = this.app.components.__session__;
         this.connection = this.app.components.__connection__;
@@ -119,11 +123,15 @@ export class ConnectorComponent implements IComponent {
     }
 
     afterStart(cb: () => void) {
+        logger.info('ConnectorComponent afterStart');
+
         this.connector.start(cb);
         this.connector.on('connection', this.hostFilter.bind(this, this.bindEvents.bind(this)));
     }
 
     stop(force: boolean, cb: () => void) {
+        logger.info('ConnectorComponent stop');
+
         if (this.connector) {
             this.connector.stop(force, cb);
             this.connector = null;
@@ -152,6 +160,8 @@ export class ConnectorComponent implements IComponent {
     }
 
     sendAsync(reqId: number, route: string, msg: any, recvs: SID[], opts: ScheduleOptions, cb: (err?: Error, resp ?: any) => void) {
+        logger.info('ConnectorComponent sendAsync');
+
         let emsg = msg;
         let self = this;
 
@@ -187,6 +197,8 @@ export class ConnectorComponent implements IComponent {
     }
 
     doSend(reqId: number, route: string, emsg: any, recvs: SID[], opts: ScheduleOptions, cb: (err?: Error) => void) {
+        logger.info('ConnectorComponent doSend');
+
         if (!emsg) {
             process.nextTick(function () {
                 return cb && cb(new Error('fail to send message for encode result is empty.'));
@@ -210,6 +222,8 @@ export class ConnectorComponent implements IComponent {
 
 
     hostFilter(cb: (socket: ISocket) => boolean, socket: ISocket) {
+        logger.info('ConnectorComponent hostFilter');
+
         if (!this.useHostFilter) {
             return cb(socket);
         }
@@ -256,7 +270,11 @@ export class ConnectorComponent implements IComponent {
     }
 
     bindEvents(socket: ISocket) {
+        logger.info('ConnectorComponent bindEvents');
+
         let curServer = this.app.getCurServer();
+
+
         let maxConnections = curServer['max-connections'];
         if (this.connection && maxConnections) {
             this.connection.increaseConnectionCount();
@@ -329,6 +347,8 @@ export class ConnectorComponent implements IComponent {
     }
 
     handleMessageAsync(msg: any, session: Session, socket: ISocket) {
+        logger.info('ConnectorComponent handleMessageAsync');
+
         /*
         if (this.decode)
         {
@@ -359,6 +379,8 @@ export class ConnectorComponent implements IComponent {
     }
 
     doHandleMessage(dmsg: any, session: Session) {
+        logger.info('ConnectorComponent doHandleMessage');
+
         if (!dmsg) {
             // discard invalid message
             return;
@@ -380,6 +402,8 @@ export class ConnectorComponent implements IComponent {
      * get session for current connection
      */
     getSession(socket: ISocket) {
+        logger.info('ConnectorComponent getSession');
+
         let app = this.app,
             sid = socket.id;
         let session = this.session.get(sid);
@@ -418,12 +442,14 @@ export class ConnectorComponent implements IComponent {
     }
 
     onSessionClose(app: Application, session: Session, reason: string) {
+        logger.info('ConnectorComponent onSessionClose');
+
         taskManager.closeQueue(session.id, true);
         app.event.emit(events.CLOSE_SESSION, session);
     }
 
     handleMessage(session: Session, msg: any) {
-        // logger.debug('[%s] handleMessage session id: %s, msg: %j', this.app.serverId, session.id, msg);
+        logger.debug('[%s] handleMessage session id: %s, msg: %j', this.app.serverId, session.id, msg);
         let type = this.checkServerType(msg.route);
         if (!type) {
             logger.error('invalid route string. route : %j', msg.route);
@@ -460,6 +486,8 @@ export class ConnectorComponent implements IComponent {
      * Get server type form request message.
      */
     checkServerType(route: string) {
+        logger.info('ConnectorComponent checkServerType');
+
         if (!route) {
             return null;
         }
@@ -471,6 +499,8 @@ export class ConnectorComponent implements IComponent {
     }
 
     verifyMessage(session: Session, msg: any) {
+        logger.info('ConnectorComponent verifyMessage');
+
         let sig = msg.body.__crypto__;
         if (!sig) {
             logger.error('receive data from client has no signature [%s]', this.app.serverId);
@@ -514,6 +544,8 @@ export class ConnectorComponent implements IComponent {
 }
 
 let getConnector = function (app: Application, opts: any) {
+    logger.info('getConnector');
+
     let connector = opts.connector;
     if (!connector) {
         return getDefaultConnector(app, opts);
@@ -524,10 +556,13 @@ let getConnector = function (app: Application, opts: any) {
     }
 
     let curServer = app.getCurServer();
+    logger.info('getDefaultConnector curServer : %j', curServer);
     return new connector(curServer.clientPort, curServer.host, opts);
 };
 
 let getDefaultConnector = function (app: Application, opts: SIOConnectorOptions) {
     let curServer = app.getCurServer();
+    logger.info('curServer : %j', curServer);
+
     return new SIOConnector(curServer.clientPort, curServer.host, opts);
 };

@@ -5,6 +5,10 @@ import { createServer as createHttpsServer } from 'https';
 import { SioSocket } from './siosocket';
 import { IConnector } from '../interfaces/IConnector';
 import { Server, ServerOptions } from 'socket.io';
+import { getLogger } from 'pinus-logger';
+import * as path from 'path';
+
+let logger = getLogger('pinus', path.basename(__filename));
 
 let PKG_ID_BYTES = 4;
 let PKG_ROUTE_LENGTH_BYTES = 1;
@@ -35,6 +39,9 @@ export class SIOConnector extends EventEmitter implements IConnector {
         opts.pingInterval = opts.pingInterval || 25;
         this.sshKey = (opts as any).sshKey;
         this.sshCert = (opts as any).sshCert;
+
+        logger.info('host : %s', host);
+        logger.info('port : %s', port);
     }
 
 
@@ -64,7 +71,7 @@ export class SIOConnector extends EventEmitter implements IConnector {
         if (!!this.sshKey) {
             let httpsServer = createHttpsServer({ key: self.sshKey, cert: self.sshCert }, function (req, res) {
                 // 要是单纯的https连接的话就会返回这个东西
-                console.log('sio https Server listening at port %d', port);
+                logger.info('sio https Server listening at port %d', port);
                 res.writeHead(200);
                 res.end('HTTPS Server is up');
             }).listen(port);
@@ -73,7 +80,7 @@ export class SIOConnector extends EventEmitter implements IConnector {
             let httpServer = createHttpServer();
             sio = new Server(httpServer, opts);
             httpServer.listen(port, function () {
-                console.log('sio http Server listening at port %d', port);
+                logger.info('sio http Server listening at port %d', port);
             });
         }
 

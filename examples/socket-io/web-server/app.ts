@@ -7,3 +7,7 @@ socket.on("hello", (arg) => {
 });
 
 socket.emit("howdy", "stranger");
+
+socket.on('connect', function() {
+    console.log('[pomeloclient.init] websocket connected!');
+});

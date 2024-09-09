@@ -19,7 +19,7 @@ app.set('name', 'pinus-example');
 app.configure('production|development', 'connector', function () {
     app.set('connectorConfig',
         {
-            connector: pinus.connectors.hybridconnector,
+            connector: pinus.connectors.sioconnector,
             heartbeat: 3,
             useDict: true,
             useProtobuf: true

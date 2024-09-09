@@ -67,6 +67,8 @@ export class SIOConnector extends EventEmitter implements IConnector {
         opts.path = '/socket.io';
         let port = this.port;
 
+        logger.info('sio http Server connection');
+
         let sio: Server;
         if (!!this.sshKey) {
             let httpsServer = createHttpsServer({ key: self.sshKey, cert: self.sshCert }, function (req, res) {
@@ -85,6 +87,8 @@ export class SIOConnector extends EventEmitter implements IConnector {
         }
 
         sio.on('connection', (socket) => {
+            logger.info('sio http Server connection');
+
             // this.wsocket.sockets.on('connection', function (socket) {
             let siosocket = new SioSocket(curId++, socket);
             self.emit('connection', siosocket);

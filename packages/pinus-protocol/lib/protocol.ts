@@ -98,6 +98,9 @@ export namespace Package {
     let bytes = Buffer.from(buffer);
     let length = 0;
     let rs = [];
+
+    console.log("decode bytes : %j", bytes)
+
     while (offset < bytes.length) {
       let type = bytes[offset++];
       length = ((bytes[offset++]) << 16 | (bytes[offset++]) << 8 | bytes[offset++]) >>> 0;
